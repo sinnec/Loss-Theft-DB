@@ -2,27 +2,16 @@ import os
 import os.path
 import docx
 import shutil
+from helper_methods import greek_accent_remover
 
 class WordCreator():
     desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-
-    @staticmethod
-    def filename_formatter(filename):
-        puncts = {'ά': 'α', 'έ': 'ε', 'ή': 'η', 'ί': 'ι', 'ό': 'ο', 'ύ': 'υ', 'ώ': 'ω'}
-        name_cap = ''
-        for c in filename.lower():
-            char = c
-            for t in puncts.keys():
-                if c in t:
-                    char = puncts[c]
-            name_cap += char
-        return name_cap.upper()
 
     def __init__(self, main):
         self.main = main
 
     def create_doc(self):
-        self.name_cap = WordCreator.filename_formatter(self.main.name)
+        self.name_cap = greek_accent_remover(self.main.name).upper()
         self.filename = self.main.surname + ' ' + self.name_cap + '.doc'
         self.doc = docx.Document()
         self.title = f'{self.main.reason} του {self.main.id_number} δελτίου ταυτότητας{self.other_docs_title} με στοιχεία: {self.main.surname} {self.main.name}.'
