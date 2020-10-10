@@ -14,3 +14,14 @@ def latin_to_greek(name):
         else:
             new_name += i
     return new_name
+
+def greek_accent_remover(filename):
+    puncts = {'ά': 'α', 'έ': 'ε', 'ή': 'η', 'ί': 'ι', 'ό': 'ο', 'ύ': 'υ', 'ώ': 'ω'}
+    name_no = ''
+    for c in filename.lower():
+        char = c
+        for t in puncts.keys():
+            if c in t:
+                char = puncts[c]
+        name_no += char
+    return name_no
