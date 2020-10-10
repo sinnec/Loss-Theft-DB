@@ -4,39 +4,16 @@ from tkinter import simpledialog
 from tkinter import messagebox
 import tkcalendar
 from datetime import datetime
-#from varname import Wrapper
 import database
 import word
+from helper_methods import latin_to_greek, datetime_formatter
 from entry import Entry
 
 class Main():
     office_dict = {1: 'Πρεσβεία', 2: 'Γενικό Προξενείο', 3: 'Επίτιμο Γενικό Προξενείο', 4:'Άμισθο Γενικό Προξενείο', 5:'Κεντρικό Λιμεναρχείο'}
-
-    @staticmethod
-    def time_data_to_app(timestring):
-        try:
-            protocol_date_obj = datetime.strptime(timestring, '%Y-%m-%d %H:%M:%S')
-            return protocol_date_obj.strftime("%d/%m/%Y")
-        except:
-            protocol_date_obj = datetime.strptime(timestring, '%Y-%m-%d')
-            return protocol_date_obj.strftime("%d/%m/%Y")
-
-    @staticmethod
-    def time_app_to_data(timestring):
-        protocol_date_obj = datetime.strptime(timestring, '%d/%m/%Y')
-        return protocol_date_obj.strftime("%Y-%m-%d")
-
-    @staticmethod
-    def entry_formatter(name):
-        eng = 'abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ'
-        el = 'αβψδεφγηιξκλμνοπρστθωςχυζΑΒΨΔΕΦΓΗΙΞΚΛΜΝΟΠΡΣΤΘΩςΧΥΖ'
-        new_name = ''
-        for i in name:
-            if i in eng:
-                new_name += el[eng.index(i)]
-            else:
-                new_name += i
-        return new_name
+    app_date_str = "%d/%m/%Y"
+    data_date_str = "%Y-%m-%d"
+    data_full_str = "%Y-%m-%d %H:%M:%S"
 
     def __init__(self, root):
         self.root = root
@@ -214,7 +191,7 @@ class Main():
 
         try:
             self.protocol_date_string = self.protocol_date_entry.get()
-            self.protocol_date = Main.time_app_to_data(self.protocol_date_string)
+            self.protocol_date = datetime_formatter(self.protocol_date_string, self.app_date_str, self.data_date_str)
         except:
             self.protocol_date = self.protocol_date_entry.get()
 
@@ -226,8 +203,8 @@ class Main():
         self.field_check('new')
 
     def get_search_pars(self):
-        self.id_number_search = Main.entry_formatter(self.id_number_search_entry.get().upper().strip())
-        self.surname_search = Main.entry_formatter(self.surname_search_entry.get().upper().strip())
+        self.id_number_search = latin_to_greek(self.id_number_search_entry.get().upper().strip())
+        self.surname_search = latin_to_greek(self.surname_search_entry.get().upper().strip())
         self.office_name_search = self.office_name_search_variable.get()
         self.sort_by = self.sort_by_variable.get()
         data.create_search_results()
@@ -261,19 +238,19 @@ class Main():
                 self.error = True
                 self.error_message += '\n- Δώστε όνομα Προξενικής/Λιμενικής Αρχής!'
         try:
-            self.time_data_to_app(self.protocol_date)
+            datetime.strptime(self.protocol_date, self.data_date_str)
         except:
             if not self.protocol_date == '':
                 self.error = True
-                self.error_message += '\n- Δώστε σωστή μορφή ημερομηνίας πρωτοκόλλου!'
+                self.error_message += '\n- Δώστε σωστή μορφή ημερομηνίας πρωτοκόλλου! π.χ. 01/01/2020'
         self.error_message.strip('\n')
         if not self.error:
-            self.id_number = Main.entry_formatter(self.id_number)
-            self.surname = Main.entry_formatter(self.surname)
-            self.name = Main.entry_formatter(self.name)
+            self.id_number = latin_to_greek(self.id_number)
+            self.surname = latin_to_greek(self.surname)
+            self.name = latin_to_greek(self.name)
             if reason == 'new':
-                self.office_name = Main.entry_formatter(self.office_name)
-                self.office_article = Main.entry_formatter(self.office_article)
+                self.office_name = latin_to_greek(self.office_name)
+                self.office_article = latin_to_greek(self.office_article)
                 self.save_to_db = data.save_to_database()
                 if self.save_to_db:
                     self.create_button.grid_forget()

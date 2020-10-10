@@ -3,8 +3,13 @@ import os.path
 import sqlite3 as lite
 from tkinter import messagebox
 from entry import Entry
+from helper_methods import latin_to_greek, datetime_formatter
 
 class Database():
+    app_date_str = "%d/%m/%Y"
+    data_date_str = "%Y-%m-%d"
+    data_full_str = "%Y-%m-%d %H:%M:%S"
+
     def __init__(self, main):
         self.main = main
         self.db_file = 'database'
@@ -106,11 +111,11 @@ class Database():
                     results = cur.fetchall()
                     for result in results:
                         try:
-                            prot_date = self.main.time_data_to_app(result[6])
+                            prot_date = datetime_formatter(result[6], self.data_date_str, self.app_date_str)
                         except:
                             prot_date = ''
                             time_date = ''
-                        time_date = self.main.time_data_to_app(result[7])
+                        time_date = datetime_formatter(result[7], self.data_full_str, self.app_date_str)
                         Entry(result[0], result[1], result[2], result[3], result[4], result[5], prot_date, time_date)
                     self.main.tree_insert()
             except Exception as e:
@@ -132,7 +137,7 @@ class Database():
                     self.main.office_article = results[0][0]
                     self.protocol_num = results[0][1]
                     self.protocol_date_string = results[0][2]
-                    self.protocol_date = self.main.time_data_to_app(self.protocol_date_string)
+                    self.protocol_date = datetime_formatter(self.protocol_date_string, self.data_date_str, self.app_date_str)
                     self.main.protocol_num_entry.delete(0, 'end')
                     self.main.protocol_date_entry.delete(0, 'end')
                     self.main.protocol_num_entry.insert(0, self.protocol_num)
@@ -173,21 +178,21 @@ class Database():
                     self.edit_office_name = edit_results[0][6]
                     self.edit_protocol_num = edit_results[0][7]
                     self.edit_protocol_date_string = edit_results[0][8]
-                    self.edit_protocol_date = self.main.time_data_to_app(self.edit_protocol_date_string)
+                    self.edit_protocol_date = datetime_formatter(self.edit_protocol_date_string, self.data_date_str, self.app_date_str)
                     self.main.edit_entry()
             except Exception as e:
                 print(e)
 
     def insert_update_entry(self):
-        self.main.id_number = self.main.entry_formatter(self.main.edit_id_number.get().upper().strip())
-        self.main.surname = self.main.entry_formatter(self.main.edit_surname.get().upper().strip())
-        self.main.name = self.main.entry_formatter(self.main.edit_name.get().strip())
+        self.main.id_number = latin_to_greek(self.main.edit_id_number.get().upper().strip())
+        self.main.surname = latin_to_greek(self.main.edit_surname.get().upper().strip())
+        self.main.name = latin_to_greek(self.main.edit_name.get().strip())
         self.main.reason = self.main.edit_reason_variable.get()
         self.main.office_name = self.main.edit_office_name_variable.get()
         self.main.protocol_num = self.main.edit_protocol_num.get()
         try:
             self.protocol_date_string = self.main.edit_protocol_date.get()
-            self.main.protocol_date = time_app_to_data(self.protocol_date_string)
+            self.main.protocol_date = datetime_formatter(self.protocol_date_string, self.app_date_str, self.data_date_str)
         except:
             self.main.protocol_date = self.main.edit_protocol_date.get()
         proceed = self.main.field_check('edit')
@@ -215,8 +220,8 @@ class Database():
     def update_office(self):
         self.old_office_name = self.main.old_office_name_variable.get()
         self.editted_office_entry = self.main.editted_office_name.get().split(' ')
-        self.editted_office_article = self.main.entry_formatter(self.editted_office_entry[0])
-        self.editted_office_name = self.main.entry_formatter(' '.join(self.editted_office_entry[1:]))
+        self.editted_office_article = latin_to_greek(self.editted_office_entry[0])
+        self.editted_office_name = latin_to_greek(' '.join(self.editted_office_entry[1:]))
         self.editted_office_type_string = self.main.edit_office_type_variable.get()
         self.editted_office_type = self.main.type_list.index(self.editted_office_type_string)+1
         if os.path.isfile(self.db):
@@ -231,8 +236,3 @@ class Database():
                     messagebox.showinfo('Επεξεργασία Αρχής', f'Επιτυχής επεξεργασία Αρχής!')
             except Exception as e:
                 print(e)
-
-
-'''time_data_to_app = self.main.time_data_to_app
-entry_formatter = self.main.entry_formatter
-time_app_to_data = self.main.time_app_to_data'''
