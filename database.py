@@ -3,7 +3,7 @@ import os.path
 import sqlite3 as lite
 from tkinter import messagebox
 from entry import Entry
-from helper_methods import latin_to_greek, datetime_formatter
+from helper_methods import latin_to_greek, datetime_formatter, greek_accent_remover
 
 class Database():
     app_date_str = "%d/%m/%Y"
@@ -55,6 +55,7 @@ class Database():
                     self.office_list = []
                     for result in cur.fetchall():
                         self.office_list.append(result[0])
+                    self.office_list = sorted(self.office_list, key=greek_accent_remover)
                     self.main.office_name.config(values=tuple(self.office_list))
                     self.main.office_name.current(0)
             except Exception as e:
@@ -69,12 +70,13 @@ class Database():
                 con = lite.connect(self.db)
                 with con:
                     cur = con.cursor()
-                    sql = f'SELECT DISTINCT office_name FROM entries ORDER BY office_name ASC;'
+                    sql = f'SELECT DISTINCT office_name FROM entries;'
                     cur.execute(sql)
                     if reason == 'search':
                         self.office_list = ['']
                     for result in cur.fetchall():
                         self.office_list.append(result[0])
+                        self.office_list = sorted(self.office_list, key=greek_accent_remover)
                     return tuple(self.office_list)
             except Exception as e:
                 print(e)
