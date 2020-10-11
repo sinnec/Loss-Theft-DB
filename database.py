@@ -1,6 +1,7 @@
 import os
 import os.path
 import sqlite3 as lite
+from tkinter import ttk
 from tkinter import messagebox
 from entry import Entry
 from helper_methods import latin_to_greek, datetime_formatter, greek_accent_remover
@@ -44,6 +45,9 @@ class Database():
             return False
 
     def create_office_tup(self, office_type):
+        self.main.office_name.set("")
+        self.main.protocol_num_entry.delete(0, 'end')
+        self.main.protocol_date_entry.delete(0, 'end')
         self.office_type = office_type
         if os.path.isfile(self.db):
             try:
@@ -57,11 +61,10 @@ class Database():
                         self.office_list.append(result[0])
                     self.office_list = sorted(self.office_list, key=greek_accent_remover)
                     self.main.office_name.config(values=tuple(self.office_list))
-                    self.main.office_name.current(0)
+                    #self.main.office_name.current(0)
             except Exception as e:
-                self.office_list = ['']
                 print(e)
-        self.retrieve_num_date()
+        #self.retrieve_num_date()
 
     def create_office_search_tup(self, reason=0):
         self.office_list = []
@@ -127,8 +130,8 @@ class Database():
         try:
             self.office = self.main.combo_selection
         except:
-            self.office = self.office_list[0]
-        if os.path.isfile(self.db):
+            self.office = ""
+        if os.path.isfile(self.db) and self.office:
             try:
                 con = lite.connect(self.db)
                 with con:
@@ -139,7 +142,10 @@ class Database():
                     self.main.office_article = results[0][0]
                     self.protocol_num = results[0][1]
                     self.protocol_date_string = results[0][2]
-                    self.protocol_date = datetime_formatter(self.protocol_date_string, self.data_date_str, self.app_date_str)
+                    try:
+                        self.protocol_date = datetime_formatter(self.protocol_date_string, self.data_date_str, self.app_date_str)
+                    except:
+                        self.protocol_date = ''
                     self.main.protocol_num_entry.delete(0, 'end')
                     self.main.protocol_date_entry.delete(0, 'end')
                     self.main.protocol_num_entry.insert(0, self.protocol_num)
@@ -180,7 +186,10 @@ class Database():
                     self.edit_office_name = edit_results[0][6]
                     self.edit_protocol_num = edit_results[0][7]
                     self.edit_protocol_date_string = edit_results[0][8]
-                    self.edit_protocol_date = datetime_formatter(self.edit_protocol_date_string, self.data_date_str, self.app_date_str)
+                    try:
+                        self.edit_protocol_date = datetime_formatter(self.edit_protocol_date_string, self.data_date_str, self.app_date_str)
+                    except:
+                        self.edit_protocol_date = ''
                     self.main.edit_entry()
             except Exception as e:
                 print(e)
@@ -218,6 +227,7 @@ class Database():
                         messagebox.showinfo('Επεξεργασία Εγγραφής', f'Επιτυχής επεξεργασία εγγραφής!')
                 except Exception as e:
                     print(e)
+        #self.main.office_name = ttk.Combobox(self.main.f1_3_2, textvariable=self.main.office_name_variable, values=(), state='readonly')
 
     def update_office(self):
         self.old_office_name = self.main.old_office_name_variable.get()

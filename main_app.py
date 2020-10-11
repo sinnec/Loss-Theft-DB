@@ -77,9 +77,9 @@ class Main():
         self.np_gen_con = tk.Radiobutton(self.f1_3_1,text=self.office_dict[4], variable=self.office_variable, value=4, bg='lightyellow', activebackground='lightyellow')
         self.np_gen_con.pack(side='left', fill='both', expand=True)
         self.np_gen_con.bind('<ButtonRelease-1>', lambda event, office_type=4: data.create_office_tup(office_type))
-        self.np_gen_con = tk.Radiobutton(self.f1_3_1,text=self.office_dict[5], variable=self.office_variable, value=5, bg='lightyellow', activebackground='lightyellow')
-        self.np_gen_con.pack(side='left', fill='both', expand=True)
-        self.np_gen_con.bind('<ButtonRelease-1>', lambda event, office_type=5: data.create_office_tup(office_type))
+        self.port_auth = tk.Radiobutton(self.f1_3_1,text=self.office_dict[5], variable=self.office_variable, value=5, bg='lightyellow', activebackground='lightyellow')
+        self.port_auth.pack(side='left', fill='both', expand=True)
+        self.port_auth.bind('<ButtonRelease-1>', lambda event, office_type=5: data.create_office_tup(office_type))
 
         self.f1_3_2 = tk.Frame(self.f1_3, bg="lightyellow", padx=5, pady=5)
         self.f1_3_2.pack(expand=True, fill='both')
