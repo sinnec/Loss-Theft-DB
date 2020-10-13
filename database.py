@@ -61,10 +61,8 @@ class Database():
                         self.office_list.append(result[0])
                     self.office_list = sorted(self.office_list, key=greek_accent_remover)
                     self.main.office_name.config(values=tuple(self.office_list))
-                    #self.main.office_name.current(0)
             except Exception as e:
                 print(e)
-        #self.retrieve_num_date()
 
     def create_office_search_tup(self, reason=0):
         self.office_list = []
@@ -199,7 +197,7 @@ class Database():
         self.main.surname = latin_to_greek(self.main.edit_surname.get().upper().strip())
         self.main.name = latin_to_greek(self.main.edit_name.get().strip())
         self.main.reason = self.main.edit_reason_variable.get()
-        self.main.office_name = self.main.edit_office_name_variable.get()
+        self.main.edit_office_name = self.main.edit_office_name_variable.get()
         self.main.protocol_num = self.main.edit_protocol_num.get()
         try:
             self.protocol_date_string = self.main.edit_protocol_date.get()
@@ -214,13 +212,13 @@ class Database():
                     con = lite.connect(self.db)
                     with con:
                         cur = con.cursor()
-                        sql = f'SELECT office_type, office_article FROM entries WHERE office_name = "{self.main.office_name}" LIMIT 1'
+                        sql = f'SELECT office_type, office_article FROM entries WHERE office_name = "{self.main.edit_office_name}" LIMIT 1'
                         cur.execute(sql)
                         results = cur.fetchall()
                         self.edit_office_type = results[0][0]
                         self.edit_office_article = results[0][1]
                         sql = 'UPDATE entries SET id_number=?, surname=?, name=?, reason=?, office_type =?, office_article =?, office_name=?, protocol_num=?, protocol_date=? WHERE id_number = ?;'
-                        cur.execute(sql, (self.main.id_number, self.main.surname, self.main.name, self.main.reason, self.edit_office_type, self.edit_office_article, self.main.office_name, self.main.protocol_num, self.main.protocol_date, self.main.id_selection))
+                        cur.execute(sql, (self.main.id_number, self.main.surname, self.main.name, self.main.reason, self.edit_office_type, self.edit_office_article, self.main.edit_office_name, self.main.protocol_num, self.main.protocol_date, self.main.id_selection))
                         cur.execute('COMMIT;')
                         self.create_search_results()
                         self.main.disable_widgets([self.main.delete_button, self.main.edit_button])
@@ -228,6 +226,7 @@ class Database():
                 except Exception as e:
                     print(e)
         #self.main.office_name = ttk.Combobox(self.main.f1_3_2, textvariable=self.main.office_name_variable, values=(), state='readonly')
+
 
     def update_office(self):
         self.old_office_name = self.main.old_office_name_variable.get()
