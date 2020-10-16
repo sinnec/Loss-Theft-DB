@@ -45,7 +45,7 @@ class Database():
             return False
 
     def create_office_tup(self, office_type):
-        self.main.office_name.set("")
+        self.main.office_name_combo.set("Επιλέξτε από τη λίστα...")
         self.main.protocol_num_entry.delete(0, 'end')
         self.main.protocol_date_entry.delete(0, 'end')
         self.office_type = office_type
@@ -60,7 +60,7 @@ class Database():
                     for result in cur.fetchall():
                         self.office_list.append(result[0])
                     self.office_list = sorted(self.office_list, key=greek_accent_remover)
-                    self.main.office_name.config(values=tuple(self.office_list))
+                    self.main.office_name_combo.configure(values=tuple(self.office_list))
             except Exception as e:
                 print(e)
 
@@ -225,7 +225,6 @@ class Database():
                         messagebox.showinfo('Επεξεργασία Εγγραφής', f'Επιτυχής επεξεργασία εγγραφής!')
                 except Exception as e:
                     print(e)
-        #self.main.office_name = ttk.Combobox(self.main.f1_3_2, textvariable=self.main.office_name_variable, values=(), state='readonly')
 
 
     def update_office(self):

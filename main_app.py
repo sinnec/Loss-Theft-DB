@@ -36,12 +36,12 @@ class Main():
         self.f1_1 = tk.LabelFrame(self.main_tab, text='Αιτία Ακύρωσης', bg="lightyellow", padx=5, pady=5) #font='"Segoe UI" 12 bold', fg="red")
         self.f1_1.pack(expand=True, fill='both')
 
-        self.reason_variable = tk.StringVar(value='Απώλεια')
-        self.loss = tk.Radiobutton(self.f1_1, text='Απώλεια', variable=self.reason_variable, value='Απώλεια', bg='lightyellow', activebackground='lightyellow')
+        self.reason_variable = tk.StringVar()
+        self.loss = tk.Radiobutton(self.f1_1, text='Απώλεια', variable=self.reason_variable, value='Απώλεια', bg='lightyellow', activebackground='lightyellow', tristatevalue=0)
         self.loss.pack(side='left', expand=True)
-        self.theft = tk.Radiobutton(self.f1_1, text='Κλοπή', variable=self.reason_variable, value='Κλοπή', bg='lightyellow', activebackground='lightyellow')
+        self.theft = tk.Radiobutton(self.f1_1, text='Κλοπή', variable=self.reason_variable, value='Κλοπή', bg='lightyellow', activebackground='lightyellow', tristatevalue=0)
         self.theft.pack(side='left', expand=True)
-        self.confiscated = tk.Radiobutton(self.f1_1, text='Κατάσχεση', variable=self.reason_variable, value='Κατάσχεση', bg='lightyellow', activebackground='lightyellow') #font='TkDefaultFont 11')
+        self.confiscated = tk.Radiobutton(self.f1_1, text='Κατάσχεση', variable=self.reason_variable, value='Κατάσχεση', bg='lightyellow', activebackground='lightyellow', tristatevalue=0) #font='TkDefaultFont 11')
         self.confiscated.pack(side='left', expand=True)
 
         self.f1_2 = tk.LabelFrame(self.main_tab, text='Στοιχεία Δελτίου', bg="lightyellow", padx=5, pady=5)
@@ -66,8 +66,8 @@ class Main():
         self.f1_3_1.pack(expand=True, fill='both')
         self.office_variable = tk.IntVar()
         self.embassy = tk.Radiobutton(self.f1_3_1,text=self.office_dict[1], variable=self.office_variable, value=1, bg='lightyellow', activebackground='lightyellow')
-        self.embassy.bind('<ButtonRelease-1>', lambda event, office_type=1: data.create_office_tup(office_type))
         self.embassy.pack(side='left', fill='both', expand=True)
+        self.embassy.bind('<ButtonRelease-1>', lambda event, office_type=1: data.create_office_tup(office_type))
         self.gen_con = tk.Radiobutton(self.f1_3_1,text=self.office_dict[2], variable=self.office_variable, value=2, bg='lightyellow', activebackground='lightyellow')
         self.gen_con.pack(side='left', fill='both', expand=True)
         self.gen_con.bind('<ButtonRelease-1>', lambda event, office_type=2: data.create_office_tup(office_type))
@@ -85,9 +85,10 @@ class Main():
         self.f1_3_2.pack(expand=True, fill='both')
         tk.Label(self.f1_3_2, text='Προξενική/Λιμενική Αρχή:', bg="lightyellow").grid(row=0, column=0)
         self.office_name_variable = tk.StringVar()
-        self.office_name = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=(), state='readonly')
-        self.office_name.bind('<<ComboboxSelected>>', self.combobox_selection)
-        self.office_name.grid(row=0, column=1, sticky='we')
+        self.office_name_variable.set("Επιλέξτε από τη λίστα...")
+        self.office_name_combo = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=(), state='readonly')
+        self.office_name_combo.bind('<<ComboboxSelected>>', self.combobox_selection)
+        self.office_name_combo.grid(row=0, column=1, sticky='we')
         tk.Button(self.f1_3_2, text='Νέα Προξενική Αρχή', command=self.new_office).grid(row=0, column=2)
 
         tk.Label(self.f1_3_2, text='Αριθμός Πρωτοκόλλου:', bg="lightyellow").grid(row=1, column=0)
@@ -184,7 +185,7 @@ class Main():
         self.reason = self.reason_variable.get()
         self.id_number = self.id_number_entry.get().upper().strip()
         self.surname = self.surname_entry.get().upper().strip()
-        self.name = self.name_entry.get().strip()
+        self.name = self.name_entry.get().title().strip()
         self.office_type = self.office_variable.get()
         self.office_name = self.office_name_variable.get().strip()
         self.protocol_num = self.protocol_num_entry.get().strip()
@@ -217,6 +218,9 @@ class Main():
     def field_check(self, reason):
         self.error = False
         self.error_message = ''
+        if self.reason == '':
+            self.error = True
+            self.error_message += '\n- Δώστε αιτία ακύρωσης!'
         if self.id_number == '':
             self.error = True
             self.error_message += '\n- Δώστε αριθμό δελτίου!'
@@ -259,13 +263,13 @@ class Main():
                     word.create_text_variables()
                 else:
                     messagebox.showerror('Σφάλμα!', f'Υπάρχει ήδη δελτίο ταυτότητας με αριθμό {self.id_number} καταχωριμένο στη βάση!')
-                    self.office_name = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=(), state='readonly')
+                    #self.office_name = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=(), state='readonly')
             elif reason == 'edit':
                 return True
         else:
             messagebox.showerror('Σφάλμα!', self.error_message.strip('\n'))
-            if reason == 'new':
-                self.office_name = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=(), state='readonly')
+            #if reason == 'new':
+                #self.office_name = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=(), state='readonly')
 
     def new_office(self):
         self.new_office_window = tk.Toplevel(self.root)
@@ -374,7 +378,7 @@ class Main():
         tk.Button(self.f1_edit_office, text='Ενημέρωση Αρχής', command=data.update_office).pack()
 
     def combobox_selection(self, event):
-        self.combo_selection = self.office_name.get()
+        self.combo_selection = self.office_name_combo.get()
         data.retrieve_num_date()
 
     def clear_tree(self):
@@ -412,17 +416,19 @@ class Main():
                 widget.configure(state='normal')
 
     def reset(self):
-        self.tab_parent.pack_forget()
-        self.create_widgets()
-        '''self.enable_widgets([self.f1_1, self.f1_2, self.f1_3_1, self.f1_3_2, self.f1_4])
+        #self.tab_parent.pack_forget()
+        #self.create_widgets()
+        self.enable_widgets([self.f1_1, self.f1_2, self.f1_3_1, self.f1_3_2, self.f1_4])
         to_delete = [self.id_number_entry, self.surname_entry, self.name_entry, self.protocol_num_entry, self.protocol_date_entry]
         for item in to_delete:
             item.delete(0, 'end')
-        self.reason_variable = tk.StringVar(value='Απώλεια')
-        #self.office_variable = tk.IntVar()
-        self.office_name = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=('',), state='readonly')
+        self.create_button.grid(row=0, column=1, sticky='ns')
+        self.new_button.grid_forget()
+        self.reason_variable.set(None)
+        self.office_variable.set(None)
+        self.office_name_variable.set("Επιλέξτε από τη λίστα...")
         self.other_doc_passport_var = tk.IntVar()
-        self.other_doc_driver_var = tk.IntVar()'''
+        self.other_doc_driver_var = tk.IntVar()
             
 
 root = tk.Tk()
