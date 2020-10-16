@@ -33,57 +33,57 @@ class Main():
         self.tab_parent.pack(expand=True, fill='both')
 
         '''Main Tab'''
-        self.f1_1 = tk.LabelFrame(self.main_tab, text='Αιτία Ακύρωσης', bg="lightyellow", padx=5, pady=5) #font='"Segoe UI" 12 bold', fg="red")
+        self.f1_1 = tk.LabelFrame(self.main_tab, text='Αιτία Ακύρωσης', bg="#E6E6FA", padx=5, pady=5) #font='"Segoe UI" 12 bold', fg="red")
         self.f1_1.pack(expand=True, fill='both')
 
         self.reason_variable = tk.StringVar()
-        self.loss = tk.Radiobutton(self.f1_1, text='Απώλεια', variable=self.reason_variable, value='Απώλεια', bg='lightyellow', activebackground='lightyellow', tristatevalue=0)
+        self.loss = tk.Radiobutton(self.f1_1, text='Απώλεια', variable=self.reason_variable, value='Απώλεια', bg='#E6E6FA', activebackground='#E6E6FA', tristatevalue=0)
         self.loss.pack(side='left', expand=True)
-        self.theft = tk.Radiobutton(self.f1_1, text='Κλοπή', variable=self.reason_variable, value='Κλοπή', bg='lightyellow', activebackground='lightyellow', tristatevalue=0)
+        self.theft = tk.Radiobutton(self.f1_1, text='Κλοπή', variable=self.reason_variable, value='Κλοπή', bg='#E6E6FA', activebackground='#E6E6FA', tristatevalue=0)
         self.theft.pack(side='left', expand=True)
-        self.confiscated = tk.Radiobutton(self.f1_1, text='Κατάσχεση', variable=self.reason_variable, value='Κατάσχεση', bg='lightyellow', activebackground='lightyellow', tristatevalue=0) #font='TkDefaultFont 11')
+        self.confiscated = tk.Radiobutton(self.f1_1, text='Κατάσχεση', variable=self.reason_variable, value='Κατάσχεση', bg='#E6E6FA', activebackground='#E6E6FA', tristatevalue=0) #font='TkDefaultFont 11')
         self.confiscated.pack(side='left', expand=True)
 
-        self.f1_2 = tk.LabelFrame(self.main_tab, text='Στοιχεία Δελτίου', bg="lightyellow", padx=5, pady=5)
+        self.f1_2 = tk.LabelFrame(self.main_tab, text='Στοιχεία Δελτίου', bg="#E6E6FA", padx=5, pady=5)
         self.f1_2.pack(expand=True, fill='both')
-        tk.Label(self.f1_2, text='Αριθμός Δελτίου:', bg="lightyellow").grid(row=0, column=0)
+        tk.Label(self.f1_2, text='Αριθμός Δελτίου:', bg="#E6E6FA").grid(row=0, column=0)
         self.id_number_entry = tk.Entry(self.f1_2)
         self.id_number_entry.grid(row=0, column=1, sticky='we')
 
-        tk.Label(self.f1_2, text='Επώνυμο:', bg="lightyellow").grid(row=2, column=0)
+        tk.Label(self.f1_2, text='Επώνυμο:', bg="#E6E6FA").grid(row=2, column=0)
         self.surname_entry = tk.Entry(self.f1_2)
         self.surname_entry.grid(row=2, column=1, sticky='we')
 
-        tk.Label(self.f1_2, text='Όνομα:', bg="lightyellow").grid(row=3, column=0)
+        tk.Label(self.f1_2, text='Όνομα:', bg="#E6E6FA").grid(row=3, column=0)
         self.name_entry = tk.Entry(self.f1_2)
         self.name_entry.grid(row=3, column=1, sticky='we')
         for col in range(3):
             self.f1_2.grid_columnconfigure(col, weight=1, minsize=183)
 
-        self.f1_3 = tk.LabelFrame(self.main_tab, text='Στοιχεία Εγγράφου', bg="lightyellow", padx=5, pady=5)
+        self.f1_3 = tk.LabelFrame(self.main_tab, text='Στοιχεία Εγγράφου', bg="#E6E6FA", padx=5, pady=5)
         self.f1_3.pack(expand=True, fill='both')
-        self.f1_3_1 = tk.Frame(self.f1_3, bg="lightyellow", padx=5, pady=5)
+        self.f1_3_1 = tk.Frame(self.f1_3, bg="#E6E6FA", padx=5, pady=5)
         self.f1_3_1.pack(expand=True, fill='both')
         self.office_variable = tk.IntVar()
-        self.embassy = tk.Radiobutton(self.f1_3_1,text=self.office_dict[1], variable=self.office_variable, value=1, bg='lightyellow', activebackground='lightyellow')
+        self.embassy = tk.Radiobutton(self.f1_3_1,text=self.office_dict[1], variable=self.office_variable, value=1, bg='#E6E6FA', activebackground='#E6E6FA')
         self.embassy.pack(side='left', fill='both', expand=True)
         self.embassy.bind('<ButtonRelease-1>', lambda event, office_type=1: data.create_office_tup(office_type))
-        self.gen_con = tk.Radiobutton(self.f1_3_1,text=self.office_dict[2], variable=self.office_variable, value=2, bg='lightyellow', activebackground='lightyellow')
+        self.gen_con = tk.Radiobutton(self.f1_3_1,text=self.office_dict[2], variable=self.office_variable, value=2, bg='#E6E6FA', activebackground='#E6E6FA')
         self.gen_con.pack(side='left', fill='both', expand=True)
         self.gen_con.bind('<ButtonRelease-1>', lambda event, office_type=2: data.create_office_tup(office_type))
-        self.hon_gen_con = tk.Radiobutton(self.f1_3_1,text=self.office_dict[3], variable=self.office_variable, value=3, bg='lightyellow', activebackground='lightyellow')
+        self.hon_gen_con = tk.Radiobutton(self.f1_3_1,text=self.office_dict[3], variable=self.office_variable, value=3, bg='#E6E6FA', activebackground='#E6E6FA')
         self.hon_gen_con.pack(side='left', fill='both', expand=True)
         self.hon_gen_con.bind('<ButtonRelease-1>', lambda event, office_type=3: data.create_office_tup(office_type))
-        self.np_gen_con = tk.Radiobutton(self.f1_3_1,text=self.office_dict[4], variable=self.office_variable, value=4, bg='lightyellow', activebackground='lightyellow')
+        self.np_gen_con = tk.Radiobutton(self.f1_3_1,text=self.office_dict[4], variable=self.office_variable, value=4, bg='#E6E6FA', activebackground='#E6E6FA')
         self.np_gen_con.pack(side='left', fill='both', expand=True)
         self.np_gen_con.bind('<ButtonRelease-1>', lambda event, office_type=4: data.create_office_tup(office_type))
-        self.port_auth = tk.Radiobutton(self.f1_3_1,text=self.office_dict[5], variable=self.office_variable, value=5, bg='lightyellow', activebackground='lightyellow')
+        self.port_auth = tk.Radiobutton(self.f1_3_1,text=self.office_dict[5], variable=self.office_variable, value=5, bg='#E6E6FA', activebackground='#E6E6FA')
         self.port_auth.pack(side='left', fill='both', expand=True)
         self.port_auth.bind('<ButtonRelease-1>', lambda event, office_type=5: data.create_office_tup(office_type))
 
-        self.f1_3_2 = tk.Frame(self.f1_3, bg="lightyellow", padx=5, pady=5)
+        self.f1_3_2 = tk.Frame(self.f1_3, bg="#E6E6FA", padx=5, pady=5)
         self.f1_3_2.pack(expand=True, fill='both')
-        tk.Label(self.f1_3_2, text='Προξενική/Λιμενική Αρχή:', bg="lightyellow").grid(row=0, column=0)
+        tk.Label(self.f1_3_2, text='Προξενική/Λιμενική Αρχή:', bg="#E6E6FA").grid(row=0, column=0)
         self.office_name_variable = tk.StringVar()
         self.office_name_variable.set("Επιλέξτε από τη λίστα...")
         self.office_name_combo = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=(), state='readonly')
@@ -91,11 +91,11 @@ class Main():
         self.office_name_combo.grid(row=0, column=1, sticky='we')
         tk.Button(self.f1_3_2, text='Νέα Προξενική Αρχή', command=self.new_office).grid(row=0, column=2)
 
-        tk.Label(self.f1_3_2, text='Αριθμός Πρωτοκόλλου:', bg="lightyellow").grid(row=1, column=0)
+        tk.Label(self.f1_3_2, text='Αριθμός Πρωτοκόλλου:', bg="#E6E6FA").grid(row=1, column=0)
         self.protocol_num_entry = tk.Entry(self.f1_3_2)
         self.protocol_num_entry.grid(row=1, column=1, sticky='we')
 
-        tk.Label(self.f1_3_2, text='Ημερομηνία Πρωτοκόλλου:', bg="lightyellow").grid(row=2, column=0)
+        tk.Label(self.f1_3_2, text='Ημερομηνία Πρωτοκόλλου:', bg="#E6E6FA").grid(row=2, column=0)
         self.protocol_date_entry = tkcalendar.DateEntry(self.f1_3_2, date_pattern='dd/mm/y', locale='el_GR') #width=12, background='darkblue', foreground='white', borderwidth=2
         self.protocol_date_entry.grid(row=2, column=1, sticky='we')
         self.protocol_date_entry.delete(0, 'end')
@@ -103,14 +103,14 @@ class Main():
         for col in range(3):
             self.f1_3_2.grid_columnconfigure(col, weight=1, minsize=183)
 
-        self.f1_4 = tk.LabelFrame(self.main_tab, text='Άλλα Έγγραφα', bg="lightyellow", padx=5, pady=5)
+        self.f1_4 = tk.LabelFrame(self.main_tab, text='Άλλα Έγγραφα', bg="#E6E6FA", padx=5, pady=5)
         self.f1_4.pack(expand=True, fill='both')
         self.other_doc_passport_var = tk.IntVar()
-        tk.Checkbutton(self.f1_4, text='Διαβατήριο', bg="lightyellow", activebackground='lightyellow', variable=self.other_doc_passport_var, onvalue=1, offvalue=0).pack(side='left', expand=True, fill='both')
+        tk.Checkbutton(self.f1_4, text='Διαβατήριο', bg="#E6E6FA", activebackground='#E6E6FA', variable=self.other_doc_passport_var, onvalue=1, offvalue=0).pack(side='left', expand=True, fill='both')
         self.other_doc_driver_var = tk.IntVar()
-        tk.Checkbutton(self.f1_4, text='Άδεια Ικανότητας Οδήγησης', bg="lightyellow", activebackground='lightyellow', variable=self.other_doc_driver_var, onvalue=1, offvalue=0).pack(side='left', expand=True, fill='both')
+        tk.Checkbutton(self.f1_4, text='Άδεια Ικανότητας Οδήγησης', bg="#E6E6FA", activebackground='#E6E6FA', variable=self.other_doc_driver_var, onvalue=1, offvalue=0).pack(side='left', expand=True, fill='both')
 
-        self.f1_5 = tk.Frame(self.main_tab, bg="lightyellow", padx=5, pady=5)
+        self.f1_5 = tk.Frame(self.main_tab, bg="#E6E6FA", padx=5, pady=5)
         self.f1_5.pack(expand=True, fill='both')
         self.new_button = tk.Button(self.f1_5, text='Νέο Έγγραφο', command=self.reset)
         self.create_button = tk.Button(self.f1_5, text='Δημιουργία Εγγράφου', command=self.get_values)
@@ -120,18 +120,18 @@ class Main():
             self.f1_5.grid_columnconfigure(col, weight=1, minsize=183)
 
         '''Search Tab'''
-        self.f2 = tk.LabelFrame(self.search_tab, text="Κριτήρια Αναζήτησης", bg="lightyellow", padx=5, pady=5)
+        self.f2 = tk.LabelFrame(self.search_tab, text="Κριτήρια Αναζήτησης", bg="#E6E6FA", padx=5, pady=5)
         self.f2.pack(expand=True, fill='both')
 
-        tk.Label(self.f2, text='Αριθμός Δελτίου:', bg="lightyellow").grid(row=0, column=0)
+        tk.Label(self.f2, text='Αριθμός Δελτίου:', bg="#E6E6FA").grid(row=0, column=0)
         self.id_number_search_entry = tk.Entry(self.f2)
         self.id_number_search_entry.grid(row=0, column=1, sticky='we')
 
-        tk.Label(self.f2, text='Επώνυμο:', bg="lightyellow").grid(row=1, column=0)
+        tk.Label(self.f2, text='Επώνυμο:', bg="#E6E6FA").grid(row=1, column=0)
         self.surname_search_entry = tk.Entry(self.f2)
         self.surname_search_entry.grid(row=1, column=1, sticky='we')
 
-        tk.Label(self.f2, text='Προξενική/Λιμενική Αρχή:', bg="lightyellow").grid(row=2, column=0)
+        tk.Label(self.f2, text='Προξενική/Λιμενική Αρχή:', bg="#E6E6FA").grid(row=2, column=0)
         self.office_search_tup = data.create_office_search_tup('search')
         self.office_name_search_variable = tk.StringVar()
         self.office_name_search = ttk.Combobox(self.f2, textvariable=self.office_name_search_variable, values=self.office_search_tup, state='readonly')
@@ -142,20 +142,20 @@ class Main():
         for col in range(3):
             self.f2.grid_columnconfigure(col, weight=1, minsize=183)
 
-        self.f3 = tk.LabelFrame(self.search_tab, text="Ταξινόμηση Κατά", bg="lightyellow", padx=5, pady=5)
+        self.f3 = tk.LabelFrame(self.search_tab, text="Ταξινόμηση Κατά", bg="#E6E6FA", padx=5, pady=5)
         self.f3.pack(expand=True, fill='both')
 
         self.sort_by_variable = tk.StringVar(value='surname')
-        self.sort_by_name = tk.Radiobutton(self.f3,text='Επώνυμο', variable=self.sort_by_variable, value='surname', bg='lightyellow', activebackground='lightyellow')
+        self.sort_by_name = tk.Radiobutton(self.f3,text='Επώνυμο', variable=self.sort_by_variable, value='surname', bg='#E6E6FA', activebackground='#E6E6FA')
         self.sort_by_name.pack(fill='both', expand=True, side='left')
-        self.sort_by_prot_date = tk.Radiobutton(self.f3,text='Ημερομηνία Πρωτοκόλλου', variable=self.sort_by_variable, value='protocol_date', bg='lightyellow', activebackground='lightyellow')
+        self.sort_by_prot_date = tk.Radiobutton(self.f3,text='Ημερομηνία Πρωτοκόλλου', variable=self.sort_by_variable, value='protocol_date', bg='#E6E6FA', activebackground='#E6E6FA')
         self.sort_by_prot_date.pack(fill='both', expand=True, side='left')
-        self.sort_by_creation_date = tk.Radiobutton(self.f3,text='Ημερομηνία Δημιουργίας', variable=self.sort_by_variable, value='timestamp', bg='lightyellow', activebackground='lightyellow')
+        self.sort_by_creation_date = tk.Radiobutton(self.f3,text='Ημερομηνία Δημιουργίας', variable=self.sort_by_variable, value='timestamp', bg='#E6E6FA', activebackground='#E6E6FA')
         self.sort_by_creation_date.pack(fill='both', expand=True, side='left')
 
         tk.Button(self.f3, text='Αναζήτηση', command=self.get_search_pars).pack(fill='both', expand=True, side='left')
 
-        self.f4 = tk.LabelFrame(self.search_tab, text="Αποτελέσματα", bg="lightyellow", padx=5, pady=5)
+        self.f4 = tk.LabelFrame(self.search_tab, text="Αποτελέσματα", bg="#E6E6FA", padx=5, pady=5)
         self.f4.pack(expand=True, fill='both')
         self.tree = ttk.Treeview(self.f4, style='Treeview')
         self.tree["columns"] = tuple(f'#{_i}' for _i in range(1, 8))
@@ -174,7 +174,7 @@ class Main():
         self.tree.pack(side='top', fill='both', expand=True)
         self.tree.bind('<<TreeviewSelect>>', self.tree_on_select)
         
-        self.f5 = tk.Frame(self.search_tab, bg="lightyellow", padx=5, pady=5)
+        self.f5 = tk.Frame(self.search_tab, bg="#E6E6FA", padx=5, pady=5)
         self.f5.pack(expand=True, fill='both')
         self.delete_button = ttk.Button(self.f5, text='Διαγραφή', command=data.delete_from_database, state='disabled')
         self.delete_button.pack(side='right', fill='both')
@@ -277,13 +277,13 @@ class Main():
         self.new_office_window.resizable(width='false', height='false')
         #self.root.wait_window(self.new_office_window)
         #self.new_office_window.geometry('1000x400')
-        self.f_new_office = tk.Frame(self.new_office_window, bg="lightyellow", padx=5, pady=5)
+        self.f_new_office = tk.Frame(self.new_office_window, bg="#E6E6FA", padx=5, pady=5)
         self.f_new_office.pack(expand=True, fill='both')
-        tk.Label(self.f_new_office, text='Προξενική/Λιμενική Αρχη ', bg="lightyellow").pack(side='left')
+        tk.Label(self.f_new_office, text='Προξενική/Λιμενική Αρχη ', bg="#E6E6FA").pack(side='left')
         self.new_office_name = tk.Entry(self.f_new_office)
         self.new_office_name.pack(side='left')
         self.new_office_name.insert(0, 'στ')
-        self.f1_new_office = tk.Frame(self.new_office_window, bg="lightyellow", padx=5, pady=5)
+        self.f1_new_office = tk.Frame(self.new_office_window, bg="#E6E6FA", padx=5, pady=5)
         self.f1_new_office.pack(expand=True, fill='both')
         tk.Button(self.f1_new_office, text='Καταχώρηση Αρχής', command=self.new_office_entry).pack()
 
@@ -293,11 +293,11 @@ class Main():
         self.edit_window.resizable(width='false', height='false')
         #self.root.wait_window(self.new_office_window)
         #self.new_office_window.geometry('1000x400')
-        self.f_edit_entry = tk.Frame(self.edit_window, bg="lightyellow", padx=5, pady=5)
+        self.f_edit_entry = tk.Frame(self.edit_window, bg="#E6E6FA", padx=5, pady=5)
         self.f_edit_entry.pack(expand=True, fill='both')
         edit_labels = ['Αριθμός Δελτίου', 'Επώνυμο', 'Όνομα', 'Αιτία Ακύρωσης', 'Προξενική/Λιμενική Αρχή', 'Αριθμός Πρωτοκόλλου', 'Ημερομηνία Πρωτοκόλλου']
         for count, label in enumerate(edit_labels):
-            tk.Label(self.f_edit_entry, text=f'{label}:', bg="lightyellow").grid(row=count, column=0)
+            tk.Label(self.f_edit_entry, text=f'{label}:', bg="#E6E6FA").grid(row=count, column=0)
         self.edit_id_number = tk.Entry(self.f_edit_entry)
         self.edit_id_number.grid(row=0, column=1)
         self.edit_id_number.insert(0, data.edit_id_number)
@@ -327,7 +327,7 @@ class Main():
         self.edit_protocol_date.grid(row=6, column=1)
         self.edit_protocol_date.delete(0, 'end')
         self.edit_protocol_date.insert(0, data.edit_protocol_date)
-        self.f1_edit_entry = tk.Frame(self.edit_window, bg="lightyellow", padx=5, pady=5)
+        self.f1_edit_entry = tk.Frame(self.edit_window, bg="#E6E6FA", padx=5, pady=5)
         self.f1_edit_entry.pack(expand=True, fill='both')
 
         tk.Button(self.f1_edit_entry, text='Ενημέρωση Εγγραφής', command=data.insert_update_entry).pack()
@@ -348,11 +348,11 @@ class Main():
         self.edit_office_window.resizable(width='false', height='false')
         #self.root.wait_window(self.new_office_window)
         #self.new_office_window.geometry('1000x400')
-        self.f_edit_office = tk.Frame(self.edit_office_window, bg="lightyellow", padx=5, pady=5)
+        self.f_edit_office = tk.Frame(self.edit_office_window, bg="#E6E6FA", padx=5, pady=5)
         self.f_edit_office.pack(expand=True, fill='both')
         edit_labels = ['Προς Επεξεργασία Άρχη:', 'Είδος Αρχής:', 'Νέα Ονομασία: Προξενική/Λιμενική Αρχή ']
         for count, label in enumerate(edit_labels):
-            tk.Label(self.f_edit_office, text=f'{label}', bg="lightyellow").grid(row=count, column=0)
+            tk.Label(self.f_edit_office, text=f'{label}', bg="#E6E6FA").grid(row=count, column=0)
 
         self.old_office_tup = data.create_office_search_tup()
         self.old_office_name_variable = tk.StringVar()
@@ -372,7 +372,7 @@ class Main():
         self.editted_office_name.grid(row=2, column=1)
         self.editted_office_name.insert(0, 'στ')
 
-        self.f1_edit_office = tk.Frame(self.edit_office_window, bg="lightyellow", padx=5, pady=5)
+        self.f1_edit_office = tk.Frame(self.edit_office_window, bg="#E6E6FA", padx=5, pady=5)
         self.f1_edit_office.pack(expand=True, fill='both')
 
         tk.Button(self.f1_edit_office, text='Ενημέρωση Αρχής', command=data.update_office).pack()
