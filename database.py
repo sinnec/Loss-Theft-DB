@@ -13,14 +13,14 @@ class Database():
 
     def __init__(self, main):
         self.main = main
-        self.db_file = 'database'
-        self.db = self.db_file + '.sqlite'
+        self.db = os.path.join('data/','database.sqlite')
         if not os.path.isfile(self.db):
             self.create_database()
 
     def create_database(self):
-        if os.path.isfile('Create table commands.sql'):
-            with open('Create table commands.sql') as f:
+        self.table_file = os.path.join('data/','Create table commands.sql')
+        if os.path.isfile(self.table_file):
+            with open(self.table_file) as f:
                 sql = f.read()
                 sql_commands = sql.split(';')
                 conn = lite.connect(self.db)
