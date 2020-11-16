@@ -242,6 +242,8 @@ class Database():
                     sql = 'UPDATE entries SET office_name=?, office_type=?, office_article=? WHERE office_name =?;'
                     cur.execute(sql, (self.editted_office_name, self.editted_office_type, self.editted_office_article, self.old_office_name))
                     cur.execute('COMMIT;')
+                    self.seach_tup = self.create_office_search_tup('search')
+                    self.main.office_name_search.configure(values=self.seach_tup)
                     self.main.edit_office_window.destroy()
                     messagebox.showinfo('Επεξεργασία Αρχής', f'Επιτυχής επεξεργασία Αρχής!')
             except Exception as e:

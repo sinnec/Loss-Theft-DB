@@ -17,7 +17,7 @@ class Main():
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Development")
+        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Development") #Last ver 1.2.1
         #self.root.geometry('550x410')
         self.root.resizable(width='false', height='false')
 
@@ -103,21 +103,26 @@ class Main():
         for col in range(3):
             self.f1_3_2.grid_columnconfigure(col, weight=1, minsize=183)
 
-        self.f1_4 = tk.LabelFrame(self.main_tab, text='Άλλα Έγγραφα', bg="lightyellow", padx=5, pady=5)
-        self.f1_4.pack(expand=True, fill='both')
-        self.other_doc_passport_var = tk.IntVar()
-        tk.Checkbutton(self.f1_4, text='Διαβατήριο', bg="lightyellow", activebackground='lightyellow', variable=self.other_doc_passport_var, onvalue=1, offvalue=0).pack(side='left', expand=True, fill='both')
-        self.other_doc_driver_var = tk.IntVar()
-        tk.Checkbutton(self.f1_4, text='Άδεια Ικανότητας Οδήγησης', bg="lightyellow", activebackground='lightyellow', variable=self.other_doc_driver_var, onvalue=1, offvalue=0).pack(side='left', expand=True, fill='both')
-
         self.f1_5 = tk.Frame(self.main_tab, bg="lightyellow", padx=5, pady=5)
-        self.f1_5.pack(expand=True, fill='both')
+        self.f1_5.pack(expand=True, fill='both', side="bottom")
         self.new_button = tk.Button(self.f1_5, text='Νέο Έγγραφο', command=self.reset)
         self.create_button = tk.Button(self.f1_5, text='Δημιουργία Εγγράφου', command=self.get_values)
         self.create_button.grid(row=0, column=1, sticky='ns')
         tk.Button(self.f1_5, text='Έξοδος', command=self.root.quit).grid(row=0, column=2, sticky='ns')
         for col in range(3):
             self.f1_5.grid_columnconfigure(col, weight=1, minsize=183)
+
+        self.f1_4 = tk.LabelFrame(self.main_tab, text='Άλλα Έγγραφα', bg="lightyellow", padx=5, pady=5)
+        self.f1_4.pack(expand=True, fill='both', side="left")
+        self.other_doc_passport_var = tk.IntVar()
+        tk.Checkbutton(self.f1_4, text='Διαβατήριο', bg="lightyellow", activebackground='lightyellow', variable=self.other_doc_passport_var, onvalue=1, offvalue=0).pack(side='left', expand=True, fill='both')
+        self.other_doc_driver_var = tk.IntVar()
+        tk.Checkbutton(self.f1_4, text='Άδεια Ικανότητας Οδήγησης', bg="lightyellow", activebackground='lightyellow', variable=self.other_doc_driver_var, onvalue=1, offvalue=0).pack(side='left', expand=True, fill='both')
+
+        self.f1_4_1 = tk.LabelFrame(self.main_tab, text='Αίτηση - Καρτέλα', bg="lightyellow", padx=5, pady=5)
+        self.f1_4_1.pack(expand=True, fill='both', side="left")
+        self.card_var = tk.IntVar()
+        tk.Checkbutton(self.f1_4_1, text='Χρειάζεται σκανάρισμα η καρτέλα;', bg="lightyellow", activebackground='lightyellow', variable=self.card_var).pack(side='left', expand=True, fill='both')
 
         '''Search Tab'''
         self.f2 = tk.LabelFrame(self.search_tab, text="Κριτήρια Αναζήτησης", bg="lightyellow", padx=5, pady=5)
@@ -198,6 +203,7 @@ class Main():
 
         self.other_doc_passport = self.other_doc_passport_var.get()
         self.other_doc_driver = self.other_doc_driver_var.get()
+        self.card = self.card_var.get()
         self.now = datetime.now()
         self.timestamp = self.now.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -238,13 +244,13 @@ class Main():
             if self.office_type == 0:
                 self.error = True
                 self.error_message += '\n- Δώστε είδος Αρχής του εγγράφου!'
-            if self.office_name == '':
+            if self.office_name == 'Επιλέξτε από τη λίστα...':
                 self.error = True
-                self.error_message += '\n- Δώστε όνομα Προξενικής/Λιμενικής Αρχής!'
+                self.error_message += '\n- Διαλέξτε Προξενική/Λιμενική Αρχή!'
         if check_reason == 'edit':
-            if self.edit_office_name == '':
+            if self.edit_office_name == 'Επιλέξτε από τη λίστα...':
                 self.error = True
-                self.error_message += '\n- Δώστε όνομα Προξενικής/Λιμενικής Αρχής!'
+                self.error_message += '\n- Διαλέξτε Προξενική/Λιμενική Αρχή!'
         try:
             datetime.strptime(self.protocol_date, self.data_date_str)
         except:
@@ -263,7 +269,7 @@ class Main():
                 if self.save_to_db:
                     self.create_button.grid_forget()
                     self.new_button.grid(row=0, column=0, sticky='ns')
-                    self.disable_widgets([self.f1_1, self.f1_2, self.f1_3_1, self.f1_3_2, self.f1_4])
+                    self.disable_widgets([self.f1_1, self.f1_2, self.f1_3_1, self.f1_3_2, self.f1_4, self.f1_4_1])
                     word.create_text_variables()
                 else:
                     messagebox.showerror('Σφάλμα!', f'Υπάρχει ήδη δελτίο ταυτότητας με αριθμό {self.id_number} καταχωριμένο στη βάση!')
@@ -283,9 +289,19 @@ class Main():
         #self.new_office_window.geometry('1000x400')
         self.f_new_office = tk.Frame(self.new_office_window, bg="lightyellow", padx=5, pady=5)
         self.f_new_office.pack(expand=True, fill='both')
-        tk.Label(self.f_new_office, text='Προξενική/Λιμενική Αρχη ', bg="lightyellow").pack(side='left')
+
+        tk.Label(self.f_new_office, text='Είδος Αρχής ', bg="lightyellow").grid(row=0, column=0)
+        self.type_list = []
+        for value in main.office_dict.values():
+            self.type_list.append(value)
+        self.new_office_type_variable = tk.StringVar()
+        self.new_office_type = ttk.Combobox(self.f_new_office, textvariable=self.new_office_type_variable, values=tuple(self.type_list), state='readonly')
+        self.new_office_type.current(0)
+        self.new_office_type.grid(row=0, column=1)
+
+        tk.Label(self.f_new_office, text='Προξενική/Λιμενική Αρχή ', bg="lightyellow").grid(row=1, column=0)
         self.new_office_name = tk.Entry(self.f_new_office)
-        self.new_office_name.pack(side='left')
+        self.new_office_name.grid(row=1, column=1)
         self.new_office_name.insert(0, 'στ')
         self.f1_new_office = tk.Frame(self.new_office_window, bg="lightyellow", padx=5, pady=5)
         self.f1_new_office.pack(expand=True, fill='both')
@@ -337,14 +353,25 @@ class Main():
         tk.Button(self.f1_edit_entry, text='Ενημέρωση Εγγραφής', command=data.insert_update_entry).pack()
 
     def new_office_entry(self):
+        self.new_office_type_key = list(self.office_dict.keys())[list(self.office_dict.values()).index(self.new_office_type_variable.get())]
         self.user_office_entry = self.new_office_name.get().split(' ')
-        self.office_article = self.user_office_entry[0]
-        self.office_tup = (' '.join(self.user_office_entry[1:]),)
-        self.new_office_window.destroy()
-        self.office_name_combo.config(values=self.office_tup)
-        self.office_name_combo.current(0)
-        self.protocol_num_entry.delete(0, 'end')
-        self.protocol_date_entry.delete(0, 'end')
+        self.office_article = latin_to_greek(self.user_office_entry[0])
+        self.office_tup = (latin_to_greek(' '.join(self.user_office_entry[1:]).strip(' ')),)
+        if self.office_tup[0] == '':
+            self.new_office_error = True
+            messagebox.showerror('Σφάλμα!', 'Το όνομα της Αρχής δεν μπορεί να είναι κενό!')
+        else:
+            self.new_office_error = False
+
+        if not self.new_office_error:
+            self.office_variable.set(self.new_office_type_key)
+            self.office_name_combo.config(values=self.office_tup)
+            self.office_name_combo.current(0)
+            self.protocol_num_entry.delete(0, 'end')
+            self.protocol_date_entry.delete(0, 'end')
+            self.new_office_window.destroy()
+
+        
 
     def edit_office(self):
         self.edit_office_window = tk.Toplevel(self.root)
@@ -420,9 +447,7 @@ class Main():
                 widget.configure(state='normal')
 
     def reset(self):
-        #self.tab_parent.pack_forget()
-        #self.create_widgets()
-        self.enable_widgets([self.f1_1, self.f1_2, self.f1_3_1, self.f1_3_2, self.f1_4])
+        self.enable_widgets([self.f1_1, self.f1_2, self.f1_3_1, self.f1_3_2, self.f1_4, self.f1_4_1])
         to_delete = [self.id_number_entry, self.surname_entry, self.name_entry, self.protocol_num_entry, self.protocol_date_entry]
         for item in to_delete:
             item.delete(0, 'end')
@@ -431,8 +456,12 @@ class Main():
         self.reason_variable.set(None)
         self.office_variable.set(None)
         self.office_name_variable.set("Επιλέξτε από τη λίστα...")
-        self.other_doc_passport_var = tk.IntVar()
-        self.other_doc_driver_var = tk.IntVar()
+        self.office_name_combo.configure(values=())
+        self.seach_tup = data.create_office_search_tup('search')
+        self.office_name_search.configure(values=self.seach_tup)
+        self.other_doc_passport_var.set(0)
+        self.other_doc_driver_var.set(0)
+        self.card_var.set(0)
             
 
 root = tk.Tk()
