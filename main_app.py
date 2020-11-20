@@ -17,7 +17,7 @@ class Main():
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Development") #Last ver 1.2.1
+        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Development") #Last ver 1.3
         #self.root.geometry('550x410')
         self.root.resizable(width='false', height='false')
 
@@ -163,9 +163,9 @@ class Main():
         self.f4 = tk.LabelFrame(self.search_tab, text="Αποτελέσματα", bg="lightyellow", padx=5, pady=5)
         self.f4.pack(expand=True, fill='both')
         self.tree = ttk.Treeview(self.f4, style='Treeview')
-        self.tree["columns"] = tuple(f'#{_i}' for _i in range(1, 8))
-        self.column_tup = ('Αρ. Δελτίου', 'Επώνυμο', 'Όνομα', 'Αιτιολογία', 'Προξενική Αρχή', 'Αρ. Πρωτοκόλλου', 'Ημ. Πρωτοκόλλου', 'Ημ. Δημιουργίας')
-        self.column_widths = [80, 150, 100, 70, 100, 110, 110, 100]
+        self.tree["columns"] = tuple(f'#{_i}' for _i in range(1, 9))
+        self.column_tup = ('Α/Α', 'Αρ. Δελτίου', 'Επώνυμο', 'Όνομα', 'Αιτιολογία', 'Προξενική Αρχή', 'Αρ. Πρωτοκόλλου', 'Ημ. Πρωτοκ.', 'Ημ. Δημιουρ.')
+        self.column_widths = [35, 70, 150, 100, 70, 100, 110, 80, 80]
         for _i in range(len(self.column_tup)):
             self.tree.heading(f"#{_i}", text=self.column_tup[_i], anchor="w")
             self.tree.column(f"#{_i}", width=self.column_widths[_i])
@@ -218,7 +218,7 @@ class Main():
 
     def tree_on_select(self, event):
         self.tree_selected = event.widget.selection()
-        self.id_selection = self.tree.item(self.tree_selected[0])['text']
+        self.id_selection = self.tree.item(self.tree_selected[0])['values'][0]
         self.enable_widgets([self.delete_button, self.edit_button])
 
     def field_check(self, check_reason):
@@ -273,13 +273,10 @@ class Main():
                     word.create_text_variables()
                 else:
                     messagebox.showerror('Σφάλμα!', f'Υπάρχει ήδη δελτίο ταυτότητας με αριθμό {self.id_number} καταχωριμένο στη βάση!')
-                    #self.office_name = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=(), state='readonly')
             elif check_reason == 'edit':
                 return True
         else:
             messagebox.showerror('Σφάλμα!', self.error_message.strip('\n'))
-            #if reason == 'new':
-                #self.office_name = ttk.Combobox(self.f1_3_2, textvariable=self.office_name_variable, values=(), state='readonly')
 
     def new_office(self):
         self.new_office_window = tk.Toplevel(self.root)
@@ -419,8 +416,8 @@ class Main():
                 self.tree.delete(child)
 
     def tree_insert(self):
-        for s in Entry.search_results:
-            self.tree.insert('', 'end', text=s.id_number, values=(s.surname, s.name, s.reason, s.office_name, s.protocol_num, s.protocol_date, s.timestamp))
+        for i, s in enumerate(Entry.search_results):
+            self.tree.insert('', 'end', text=i+1, values=(s.id_number, s.surname, s.name, s.reason, s.office_name, s.protocol_num, s.protocol_date, s.timestamp))
 
     def disable_widgets(self, widgets):
         for widget in widgets:
