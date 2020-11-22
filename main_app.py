@@ -4,10 +4,11 @@ from tkinter import simpledialog
 from tkinter import messagebox
 import tkcalendar
 from datetime import datetime
-import database
-import word
 from helper_methods import latin_to_greek, datetime_formatter
 from entry import Entry
+import database
+import word
+
 
 class Main():
     office_dict = {1: 'Πρεσβεία', 2: 'Γενικό Προξενείο', 3: 'Επίτιμο Γενικό Προξενείο', 4:'Άμισθο Γενικό Προξενείο', 5:'Κεντρικό Λιμεναρχείο'}
@@ -17,7 +18,7 @@ class Main():
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Development") #Last ver 1.3
+        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Development") #Last ver 1.3.1
         #self.root.geometry('550x410')
         self.root.resizable(width='false', height='false')
 
@@ -185,6 +186,15 @@ class Main():
         self.delete_button.pack(side='right', fill='both')
         self.edit_button = ttk.Button(self.f5, text='Επεξεργασία', command=data.update_entry_retrieve, state='disabled')
         self.edit_button.pack(side='right', fill='both')
+
+        '''Right click menu design'''
+        self.popup_menu = tk.Menu(self.root, tearoff=0)
+        self.popup_menu.add_command(label="Επικόλληση")
+
+        
+    def right_click_menu(self, event):
+        self.popup_menu.entryconfigure("Επικόλληση", command=lambda: event.widget.event_generate("<<Paste>>"))
+        self.popup_menu.tk.call("tk_popup", self.popup_menu, event.x_root, event.y_root)
 
     def get_values(self):
         self.reason = self.reason_variable.get()
@@ -416,8 +426,14 @@ class Main():
                 self.tree.delete(child)
 
     def tree_insert(self):
+        #Row coloring won't work in 8.6.9 tk version
+        self.tree.tag_configure("oddrow", background='lightgrey')
         for i, s in enumerate(Entry.search_results):
-            self.tree.insert('', 'end', text=i+1, values=(s.id_number, s.surname, s.name, s.reason, s.office_name, s.protocol_num, s.protocol_date, s.timestamp))
+            self.value_list = (s.id_number, s.surname, s.name, s.reason, s.office_name, s.protocol_num, s.protocol_date, s.timestamp)
+            if i % 2 == 0:
+                self.tree.insert('', 'end', text=i+1, values=self.value_list)
+            else:
+                self.tree.insert('', 'end', text=i+1, values=self.value_list, tags=('oddrow',))
 
     def disable_widgets(self, widgets):
         for widget in widgets:
@@ -459,11 +475,12 @@ class Main():
         self.other_doc_passport_var.set(0)
         self.other_doc_driver_var.set(0)
         self.card_var.set(0)
-            
 
+            
 root = tk.Tk()
 main = Main(root)
 data = database.Database(main)
 word = word.WordCreator(main)
 main.create_widgets()
+main.id_number_entry.bind_class("Entry", "<Button-3><ButtonRelease-3>", main.right_click_menu)
 root.mainloop()
