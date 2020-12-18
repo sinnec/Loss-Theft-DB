@@ -4,7 +4,7 @@ from tkinter import simpledialog
 from tkinter import messagebox
 import tkcalendar
 from datetime import datetime
-from helper_methods import latin_to_greek, datetime_formatter
+from helper_methods import latin_to_greek, datetime_formatter, greek_accent_remover
 from entry import Entry
 import database
 import word
@@ -200,7 +200,7 @@ class Main():
     def get_values(self):
         self.reason = self.reason_variable.get()
         self.id_number = self.id_number_entry.get().upper().strip()
-        self.surname = self.surname_entry.get().upper().strip()
+        self.surname = greek_accent_remover(self.surname_entry.get().lower()).upper().strip()
         self.name = self.name_entry.get().title().strip()
         self.office_type = self.office_variable.get()
         self.office_name = self.office_name_variable.get().strip()
