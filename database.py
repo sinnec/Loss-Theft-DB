@@ -99,7 +99,7 @@ class Database():
         else:
             self.search_criteria = f'WHERE {self.filled_search_fields[0][0]} LIKE "%{self.filled_search_fields[0][1]}%" AND\
              {self.filled_search_fields[1][0]} LIKE "%{self.filled_search_fields[1][1]}%" AND {self.filled_search_fields[2][0]} LIKE "%{self.filled_search_fields[2][1]}%" '
-        if self.main.sort_by == 'surname':
+        if self.main.sort_by == 'surname, name':
             self.des_asc = 'ASC'
         else:
             self.des_asc = 'DESC'

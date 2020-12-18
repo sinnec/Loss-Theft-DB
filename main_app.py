@@ -152,7 +152,7 @@ class Main():
         self.f3.pack(expand=True, fill='both')
 
         self.sort_by_variable = tk.StringVar(value='surname')
-        self.sort_by_name = tk.Radiobutton(self.f3,text='Επώνυμο', variable=self.sort_by_variable, value='surname', bg='lightyellow', activebackground='lightyellow')
+        self.sort_by_name = tk.Radiobutton(self.f3,text='Επώνυμο', variable=self.sort_by_variable, value='surname, name', bg='lightyellow', activebackground='lightyellow')
         self.sort_by_name.pack(fill='both', expand=True, side='left')
         self.sort_by_prot_date = tk.Radiobutton(self.f3,text='Ημερομηνία Πρωτοκόλλου', variable=self.sort_by_variable, value='protocol_date', bg='lightyellow', activebackground='lightyellow')
         self.sort_by_prot_date.pack(fill='both', expand=True, side='left')
@@ -164,9 +164,9 @@ class Main():
         self.f4 = tk.LabelFrame(self.search_tab, text="Αποτελέσματα", bg="lightyellow", padx=5, pady=5)
         self.f4.pack(expand=True, fill='both')
         self.tree = ttk.Treeview(self.f4, style='Treeview')
-        self.tree["columns"] = tuple(f'#{_i}' for _i in range(1, 9))
-        self.column_tup = ('Α/Α', 'Αρ. Δελτίου', 'Επώνυμο', 'Όνομα', 'Αιτιολογία', 'Προξενική Αρχή', 'Αρ. Πρωτοκόλλου', 'Ημ. Πρωτοκ.', 'Ημ. Δημιουρ.')
-        self.column_widths = [35, 70, 150, 100, 70, 100, 110, 80, 80]
+        self.tree["columns"] = tuple(f'#{_i}' for _i in range(1, 10))
+        self.column_tup = ('', 'Α/Α', 'Αρ. Δελτίου', 'Επώνυμο', 'Όνομα', 'Αιτιολογία', 'Προξενική Αρχή', 'Αρ. Πρωτοκόλλου', 'Ημ. Πρωτοκ.', 'Ημ. Δημιουρ.')
+        self.column_widths = [0, 45, 70, 130, 100, 70, 100, 110, 80, 90] #first column is blank
         for _i in range(len(self.column_tup)):
             self.tree.heading(f"#{_i}", text=self.column_tup[_i], anchor="w")
             self.tree.column(f"#{_i}", width=self.column_widths[_i])
@@ -190,6 +190,7 @@ class Main():
         '''Right click menu design'''
         self.popup_menu = tk.Menu(self.root, tearoff=0)
         self.popup_menu.add_command(label="Επικόλληση")
+        self.id_number_entry.bind_class("Entry", "<Button-3><ButtonRelease-3>", self.right_click_menu)
 
         
     def right_click_menu(self, event):
@@ -228,7 +229,7 @@ class Main():
 
     def tree_on_select(self, event):
         self.tree_selected = event.widget.selection()
-        self.id_selection = self.tree.item(self.tree_selected[0])['values'][0]
+        self.id_selection = self.tree.item(self.tree_selected[0])['values'][1]
         self.enable_widgets([self.delete_button, self.edit_button])
 
     def field_check(self, check_reason):
@@ -429,11 +430,11 @@ class Main():
         #Row coloring won't work in 8.6.9 tk version
         self.tree.tag_configure("oddrow", background='lightgrey')
         for i, s in enumerate(Entry.search_results):
-            self.value_list = (s.id_number, s.surname, s.name, s.reason, s.office_name, s.protocol_num, s.protocol_date, s.timestamp)
+            self.value_list = (i+1, s.id_number, s.surname, s.name, s.reason, s.office_name, s.protocol_num, s.protocol_date, s.timestamp)
             if i % 2 == 0:
-                self.tree.insert('', 'end', text=i+1, values=self.value_list)
+                self.tree.insert('', 'end', text='', values=self.value_list) # first (text) column is blank
             else:
-                self.tree.insert('', 'end', text=i+1, values=self.value_list, tags=('oddrow',))
+                self.tree.insert('', 'end', text='', values=self.value_list, tags=('oddrow',))
 
     def disable_widgets(self, widgets):
         for widget in widgets:
@@ -474,13 +475,11 @@ class Main():
         self.office_name_search.configure(values=self.seach_tup)
         self.other_doc_passport_var.set(0)
         self.other_doc_driver_var.set(0)
-        self.card_var.set(0)
-
+        self.card_var.set(0) 
             
 root = tk.Tk()
 main = Main(root)
 data = database.Database(main)
 word = word.WordCreator(main)
 main.create_widgets()
-main.id_number_entry.bind_class("Entry", "<Button-3><ButtonRelease-3>", main.right_click_menu)
 root.mainloop()
