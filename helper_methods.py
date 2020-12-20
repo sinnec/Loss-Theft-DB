@@ -15,18 +15,18 @@ def latin_to_greek(name):
             new_name += i
     return new_name
 
-def greek_accent_remover(filename):
+def greek_accent_remover(string_name):
     puncts = {'ά': 'α', 'έ': 'ε', 'ή': 'η', 'ί': 'ι', 'ΐ': 'ϊ', 'ό': 'ο', 'ύ': 'υ', 'ώ': 'ω',
                 'Ά': 'Α', 'Έ': 'Ε', 'Ή': 'Η', 'Ί': 'Ι', 'Ό': 'Ο', 'Ύ': 'Υ', 'Ώ': 'Ω'}
     dieresis = {'ι': 'ϊ', 'υ': 'ϋ'}
-    name_no = ''
+    new_name = ''
     prev_char = 0
-    for c in filename:
+    for c in string_name:
         char = c
         if c in puncts.keys():
             char = puncts[c]
         if char in dieresis.keys() and prev_char in ('ά', 'ό', 'έ'):
             char = dieresis[char]
         prev_char = c
-        name_no += char
-    return name_no
+        new_name += char
+    return new_name
