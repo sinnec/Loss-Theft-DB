@@ -86,7 +86,7 @@ class Database():
         Entry.search_results = []
         self.main.clear_tree()
         self.filled_search_fields = []
-        for field in [['id_number', self.main.id_number_search], ['surname' ,self.main.surname_search], ['office_name', self.main.office_name_search]]:
+        for field in [['id_number', self.main.id_number_search], ['surname' ,self.main.surname_search], ['office_name', self.main.office_name_search_selection]]:
             if field[1]:
                 self.filled_search_fields.append(field)
         if len(self.filled_search_fields) == 0:
@@ -242,8 +242,8 @@ class Database():
                     sql = 'UPDATE entries SET office_name=?, office_type=?, office_article=? WHERE office_name =?;'
                     cur.execute(sql, (self.editted_office_name, self.editted_office_type, self.editted_office_article, self.old_office_name))
                     cur.execute('COMMIT;')
-                    self.seach_tup = self.create_office_search_tup('search')
-                    self.main.office_name_search.configure(values=self.seach_tup)
+                    #self.seach_tup = self.create_office_search_tup('search') TO BE REMOVED AFTER TESTING
+                    #self.main.office_name_search.configure(values=self.seach_tup) TO BE REMOVED AFTER TESTING
                     self.main.edit_office_window.destroy()
                     messagebox.showinfo('Επεξεργασία Αρχής', f'Επιτυχής επεξεργασία Αρχής!')
             except Exception as e:

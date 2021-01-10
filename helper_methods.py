@@ -25,8 +25,8 @@ def greek_accent_remover(string_name):
         char = c
         if c in puncts.keys():
             char = puncts[c]
-        if char in dieresis.keys() and prev_char in ('ά', 'ό', 'έ'):
-            char = dieresis[char]
+        if c in dieresis.keys() and prev_char in ('ά', 'ό', 'έ'):
+            char = dieresis[c]
         prev_char = c
         new_name += char
     return new_name

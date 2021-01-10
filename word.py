@@ -18,7 +18,7 @@ class WordCreator():
 
         self.doc.add_paragraph(self.title)
         self.doc.add_paragraph('')
-        self.doc.add_paragraph('ΣΧΕΤ.: α)  Η 8200/0 – 469448 από 5-10-2014 εγκύκλιος διαταγή.')
+        self.doc.add_paragraph('ΣΧΕΤ.: α) Η 8200/0 – 469448 από 5-10-2014 εγκύκλιος διαταγή.')
         if self.main.card == 1:
             self.doc.add_paragraph(f'            β) Η 71675/12/439946 από 7-4-2012 διαταγή.')
         self.doc.add_paragraph(f'            {self.card_text}) Το {self.main.protocol_num}{self.from_prot_date}{self.main.protocol_date_string} έγγραφο του {self.office_type_text} {self.main.office_article} {self.main.office_name}.')

@@ -18,7 +18,8 @@ class Main():
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Development") #Last ver 1.3.1
+        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Dev") #Last v1.3.2
+        
         #self.root.geometry('550x410')
         self.root.resizable(width='false', height='false')
 
@@ -191,6 +192,15 @@ class Main():
         self.popup_menu = tk.Menu(self.root, tearoff=0)
         self.popup_menu.add_command(label="Επικόλληση")
         self.id_number_entry.bind_class("Entry", "<Button-3><ButtonRelease-3>", self.right_click_menu)
+        
+        '''Main window position'''
+        self.window_width = self.root.winfo_reqwidth()
+        self.window_height = self.root.winfo_reqheight()
+        # Gets both half the screen width/height and window width/height
+        self.position_right = int(self.root.winfo_screenwidth()/2 - self.window_width/2)
+        self.position_down = int(self.root.winfo_screenheight()/2 - self.window_height/2)   
+        # Positions the window in the center of the page.
+        self.root.geometry(f"+{self.position_right}+{self.position_down}")
 
         
     def right_click_menu(self, event):
@@ -223,7 +233,7 @@ class Main():
     def get_search_pars(self):
         self.id_number_search = latin_to_greek(self.id_number_search_entry.get().upper().strip())
         self.surname_search = latin_to_greek(self.surname_search_entry.get().upper().strip())
-        self.office_name_search = self.office_name_search_variable.get()
+        self.office_name_search_selection = self.office_name_search_variable.get()
         self.sort_by = self.sort_by_variable.get()
         data.create_search_results()
 
@@ -471,8 +481,8 @@ class Main():
         self.office_variable.set(None)
         self.office_name_variable.set("Επιλέξτε από τη λίστα...")
         self.office_name_combo.configure(values=())
-        self.seach_tup = data.create_office_search_tup('search')
-        self.office_name_search.configure(values=self.seach_tup)
+        #self.seach_tup = data.create_office_search_tup('search') TO BE REMOVED AFTER TESTING
+        #self.office_name_search.configure(values=self.seach_tup) TO BE REMOVED AFTER TESTING
         self.other_doc_passport_var.set(0)
         self.other_doc_driver_var.set(0)
         self.card_var.set(0) 
