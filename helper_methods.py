@@ -30,3 +30,12 @@ def greek_accent_remover(string_name):
         prev_char = c
         new_name += char
     return new_name
+
+def window_centre_position(window):
+        window_width = window.winfo_reqwidth()
+        window_height = window.winfo_reqheight()
+        # Gets both half the screen width/height and window width/height
+        position_right = int(window.winfo_screenwidth()/2 - window_width/2)
+        position_down = int(window.winfo_screenheight()/2 - window_height/2)   
+        # Positions the window in the center of the page.
+        return window.geometry(f"+{position_right}+{position_down}")

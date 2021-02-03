@@ -4,7 +4,7 @@ from tkinter import simpledialog
 from tkinter import messagebox
 import tkcalendar
 from datetime import datetime
-from helper_methods import latin_to_greek, datetime_formatter, greek_accent_remover
+from helper_methods import latin_to_greek, datetime_formatter, greek_accent_remover, window_centre_position
 from entry import Entry
 import database
 import word
@@ -20,7 +20,7 @@ class Main():
         self.root = root
         self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Dev") #Last v1.3.2
         
-        #self.root.geometry('550x410')
+        #self.root.geometry('750x400')
         self.root.resizable(width='false', height='false')
 
     def create_widgets(self):
@@ -166,8 +166,8 @@ class Main():
         self.f4.pack(expand=True, fill='both')
         self.tree = ttk.Treeview(self.f4, style='Treeview')
         self.tree["columns"] = tuple(f'#{_i}' for _i in range(1, 10))
-        self.column_tup = ('', 'Α/Α', 'Αρ. Δελτίου', 'Επώνυμο', 'Όνομα', 'Αιτιολογία', 'Προξενική Αρχή', 'Αρ. Πρωτοκόλλου', 'Ημ. Πρωτοκ.', 'Ημ. Δημιουρ.')
-        self.column_widths = [0, 45, 70, 130, 100, 70, 100, 110, 80, 90] #first column is blank
+        self.column_tup = ('', 'Α/Α', 'Αρ. Δελτίου', 'Επώνυμο', 'Όνομα', 'Αιτιολογία', 'Προξενική Αρχή', 'Αρ. Πρωτοκόλλου', 'Ημ. Πρωτοκόλλου', 'Ημ. Δημιουργίας')
+        self.column_widths = [0, 45, 70, 130, 100, 70, 100, 110, 110, 130] #first column is blank
         for _i in range(len(self.column_tup)):
             self.tree.heading(f"#{_i}", text=self.column_tup[_i], anchor="w")
             self.tree.column(f"#{_i}", width=self.column_widths[_i])
@@ -194,14 +194,7 @@ class Main():
         self.id_number_entry.bind_class("Entry", "<Button-3><ButtonRelease-3>", self.right_click_menu)
         
         '''Main window position'''
-        self.window_width = self.root.winfo_reqwidth()
-        self.window_height = self.root.winfo_reqheight()
-        # Gets both half the screen width/height and window width/height
-        self.position_right = int(self.root.winfo_screenwidth()/2 - self.window_width/2)
-        self.position_down = int(self.root.winfo_screenheight()/2 - self.window_height/2)   
-        # Positions the window in the center of the page.
-        self.root.geometry(f"+{self.position_right}+{self.position_down}")
-
+        window_centre_position(self.root)
         
     def right_click_menu(self, event):
         self.popup_menu.entryconfigure("Επικόλληση", command=lambda: event.widget.event_generate("<<Paste>>"))
@@ -325,6 +318,8 @@ class Main():
         self.f1_new_office.pack(expand=True, fill='both')
         tk.Button(self.f1_new_office, text='Καταχώρηση Αρχής', command=self.new_office_entry).pack()
 
+        window_centre_position(self.new_office_window)
+
     def edit_entry(self):
         self.edit_window = tk.Toplevel(self.root)
         self.edit_window.title("Επεξεργασία Εγγραφής")
@@ -369,6 +364,8 @@ class Main():
         self.f1_edit_entry.pack(expand=True, fill='both')
 
         tk.Button(self.f1_edit_entry, text='Ενημέρωση Εγγραφής', command=data.insert_update_entry).pack()
+
+        window_centre_position(self.edit_window)
 
     def new_office_entry(self):
         self.new_office_type_key = list(self.office_dict.keys())[list(self.office_dict.values()).index(self.new_office_type_variable.get())]
@@ -426,6 +423,8 @@ class Main():
 
         tk.Button(self.f1_edit_office, text='Ενημέρωση Αρχής', command=data.update_office).pack()
 
+        window_centre_position(self.edit_office_window)
+
     def combobox_selection(self, event):
         self.combo_selection = self.office_name_combo.get()
         data.retrieve_num_date()
@@ -481,8 +480,6 @@ class Main():
         self.office_variable.set(None)
         self.office_name_variable.set("Επιλέξτε από τη λίστα...")
         self.office_name_combo.configure(values=())
-        #self.seach_tup = data.create_office_search_tup('search') TO BE REMOVED AFTER TESTING
-        #self.office_name_search.configure(values=self.seach_tup) TO BE REMOVED AFTER TESTING
         self.other_doc_passport_var.set(0)
         self.other_doc_driver_var.set(0)
         self.card_var.set(0) 

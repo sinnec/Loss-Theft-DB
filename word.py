@@ -18,14 +18,14 @@ class WordCreator():
 
         self.doc.add_paragraph(self.title)
         self.doc.add_paragraph('')
-        self.doc.add_paragraph('ΣΧΕΤ.: α) Η 8200/0 – 469448 από 5-10-2014 εγκύκλιος διαταγή.')
+        self.doc.add_paragraph('ΣΧΕΤ.: α) Η 8200/0 – 469448 από 05/10/2014 εγκύκλιος διαταγή.')
         if self.main.card == 1:
-            self.doc.add_paragraph(f'            β) Η 71675/12/439946 από 7-4-2012 διαταγή.')
-        self.doc.add_paragraph(f'            {self.card_text}) Το {self.main.protocol_num}{self.from_prot_date}{self.main.protocol_date_string} έγγραφο του {self.office_type_text} {self.main.office_article} {self.main.office_name}.')
+            self.doc.add_paragraph(f'            β) Η 71675/12/439946 από 07/04/2012 διαταγή.')
+        self.doc.add_paragraph(f'            {self.card_text}) Το {self.main.protocol_num}{self.from_prot_date}{self.main.protocol_date_string} {self.doc_type} του {self.office_type_text} {self.main.office_article} {self.main.office_name}.')
         self.doc.add_paragraph('')
         self.doc.add_paragraph(f'  Σας διαβιβάζουμε το ανωτέρω ({self.card_text}) σχετικό και παρακαλούμε όπως προβείτε στην άμεση ακύρωση του εν θέματι δελτίου ταυτότητας, λόγω {self.reason_text} του, καταχωρώντας τις προβλεπόμενες μεταβολές στην κεντρική εφαρμογή ταυτοτήτων σύμφωνα με την ανωτέρω (α) εγκύκλιο.')
         if self.main.card == 1:
-            self.doc.add_paragraph(f'       Εφιστούμε την προσοχή σας για τη σάρωση της καρτέλας (αίτηση - φωτογραφία) βάσει της (β) σχετικής, προ της καταστροφής των δικαιολογητικών.')
+            self.doc.add_paragraph(f'  Εφιστούμε την προσοχή σας για τη σάρωση της καρτέλας (αίτηση - φωτογραφία) βάσει της (β) σχετικής, προ της καταστροφής των δικαιολογητικών.')
         self.doc.add_paragraph(self.other_docs_par)
         self.doc.save(self.filename)
         shutil.move(self.filename, self.desktop)
@@ -38,6 +38,8 @@ class WordCreator():
         else:
             self.reason_text = 'κατάσχεσής'
 
+        self.doc_type = 'έγγραφο'
+
         if self.main.office_type == 1:
             self.office_type_text = 'Προξενικού Γραφείου της Πρεσβείας της Ελλάδος'
         elif self.main.office_type == 2:
@@ -48,6 +50,7 @@ class WordCreator():
             self.office_type_text = 'Άμισθου Γενικού Προξενείου της Ελλάδος'
         else:
             self.office_type_text = 'Κεντρικού Λιμεναρχείου'
+            self.doc_type = 'σήμα'
 
         if self.main.card == 0:
             self.card_text = 'β'
