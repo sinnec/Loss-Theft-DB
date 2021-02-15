@@ -2,6 +2,7 @@ import os
 import os.path
 import docx
 import shutil
+import subprocess
 from helper_methods import greek_accent_remover
 
 class WordCreator():
@@ -29,6 +30,7 @@ class WordCreator():
         self.doc.add_paragraph(self.other_docs_par)
         self.doc.save(self.filename)
         shutil.move(self.filename, self.desktop)
+        subprocess.Popen(os.path.join(WordCreator.desktop, self.filename), shell=True)
 
     def create_text_variables(self):
         if self.main.reason == 'Απώλεια':
