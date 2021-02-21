@@ -2,8 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import simpledialog
 from tkinter import messagebox
+from tkinter import filedialog
 import tkcalendar
 from datetime import datetime
+import shelve
+import os.path
 from helper_methods import latin_to_greek, datetime_formatter, greek_accent_remover, window_centre_position
 from entry import Entry
 import database
@@ -15,10 +18,11 @@ class Main():
     app_date_str = "%d/%m/%Y"
     data_date_str = "%Y-%m-%d"
     data_full_str = "%Y-%m-%d %H:%M:%S"
+    user_pref_location = os.path.join(os.path.join(os.path.join(os.environ['USERPROFILE'], 'Documents'), 'Loss-Theft-DB'), 'Data')
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Dev") #Last v1.3.2
+        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Dev") #Last v1.3.3
         
         #self.root.geometry('750x400')
         self.root.resizable(width='false', height='false')
@@ -195,6 +199,13 @@ class Main():
         
         '''Main window position'''
         window_centre_position(self.root)
+
+        '''Create shelve or open'''
+        if not os.path.isfile(os.path.join(self.user_pref_location, "user_pref.dat")):
+            self.create_shelve()
+
+        self.open_shelve()
+
         
     def right_click_menu(self, event):
         self.popup_menu.entryconfigure("Επικόλληση", command=lambda: event.widget.event_generate("<<Paste>>"))
@@ -444,6 +455,20 @@ class Main():
                 self.tree.insert('', 'end', text='', values=self.value_list) # first (text) column is blank
             else:
                 self.tree.insert('', 'end', text='', values=self.value_list, tags=('oddrow',))
+
+    def create_shelve(self):
+        os.makedirs(self.user_pref_location, exist_ok=True)
+        self.shelf = shelve.open(os.path.join(self.user_pref_location, "user_pref"))
+        self.shelf.close()
+
+
+    def open_shelve(self):
+        self.shelf = shelve.open(os.path.join(self.user_pref_location, "user_pref"))
+        while self.shelf.get('destination_folder', -1) == -1 or self.shelf['destination_folder'] == '':
+            self.shelf['destination_folder'] = filedialog.askdirectory(title='Επιλέξτε τον φάκελο που θα αρχειοθετούνται οι κλοπές/απώλειες')
+        self.folder_selected = self.shelf['destination_folder']
+        self.shelf.close()
+
 
     def disable_widgets(self, widgets):
         for widget in widgets:
