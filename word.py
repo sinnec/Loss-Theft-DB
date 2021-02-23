@@ -9,6 +9,7 @@ from helper_methods import greek_accent_remover
 class WordCreator():
     def __init__(self, main):
         self.main = main
+        self.doc_move_ok = 0
 
     def create_doc(self):
         self.name_cap = greek_accent_remover(self.main.name).upper()
