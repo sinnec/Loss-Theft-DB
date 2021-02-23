@@ -22,7 +22,7 @@ class Main():
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Dev") #Last v1.3.3
+        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Dev") #Released v1.4.1
         
         #self.root.geometry('750x400')
         self.root.resizable(width='false', height='false')
@@ -114,7 +114,7 @@ class Main():
         self.new_button = tk.Button(self.f1_5, text='Νέο Έγγραφο', command=self.reset)
         self.create_button = tk.Button(self.f1_5, text='Δημιουργία Εγγράφου', command=self.get_values)
         self.create_button.grid(row=0, column=1, sticky='ns')
-        tk.Button(self.f1_5, text='Έξοδος', command=self.root.quit).grid(row=0, column=2, sticky='ns')
+        tk.Button(self.f1_5, text='Έξοδος', command=self.exit).grid(row=0, column=2, sticky='ns')
         for col in range(3):
             self.f1_5.grid_columnconfigure(col, weight=1, minsize=183)
 
@@ -495,6 +495,8 @@ class Main():
                 widget.configure(state='normal')
 
     def reset(self):
+        if word.doc_move_ok == 1:
+            word.move_pdf_file()
         self.enable_widgets([self.f1_1, self.f1_2, self.f1_3_1, self.f1_3_2, self.f1_4, self.f1_4_1])
         to_delete = [self.id_number_entry, self.surname_entry, self.name_entry, self.protocol_num_entry, self.protocol_date_entry]
         for item in to_delete:
@@ -507,11 +509,17 @@ class Main():
         self.office_name_combo.configure(values=())
         self.other_doc_passport_var.set(0)
         self.other_doc_driver_var.set(0)
-        self.card_var.set(0) 
+        self.card_var.set(0)
+
+    def exit(self):
+        if word.doc_move_ok == 1:
+            word.move_pdf_file()
+        root.destroy()
             
 root = tk.Tk()
 main = Main(root)
 data = database.Database(main)
 word = word.WordCreator(main)
 main.create_widgets()
+root.protocol("WM_DELETE_WINDOW", main.exit)
 root.mainloop()

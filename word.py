@@ -29,7 +29,7 @@ class WordCreator():
         self.doc.add_paragraph(self.other_docs_par)
         self.doc.save(self.doc_filename)
         
-        self.move_files()
+        self.move_doc_file()
 
         subprocess.Popen(self.doc_destination, shell=True)
 
@@ -81,7 +81,8 @@ class WordCreator():
         self.create_doc()
 
     
-    def move_files(self):
+    def move_doc_file(self):
+        self.doc_move_ok = 0
         self.desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
         self.pdf_filename = self.doc_filename.split(".")[0] + '.pdf'
         self.office_folder = os.path.join(self.main.folder_selected, self.main.office_name)
@@ -91,20 +92,27 @@ class WordCreator():
         if not os.path.isfile(os.path.join(self.office_folder, self.doc_filename)):
             shutil.move(self.doc_filename, self.office_folder)
             self.doc_destination = os.path.join(self.office_folder, self.doc_filename)
-            while True:
-                try:
-                    os.rename(os.path.join(self.desktop, self.pdf_filename), os.path.join(self.office_folder, self.pdf_filename))
-                    break
-                except PermissionError:
-                    messagebox.showerror('Σφάλμα!', f'Παρακαλώ κλείστε το αρχείο {self.pdf_filename} προκειμένου ολοκληρωθεί η αρχειοθέτηση!')
-                except FileExistsError:
-                    messagebox.showerror('Σφάλμα!', f'Το αρχείο με τίτλο {self.pdf_filename} υπάρχει ήδη στον φάκελο {self.main.office_name}!\nΠαρακαλώ μετακινήσετε το αρχείο χειροκίνητα!')
-                    break
-                except OSError:
-                    shutil.move(os.path.join(self.desktop, self.pdf_filename), os.path.join(self.office_folder, self.pdf_filename))
-                    break
+            self.doc_move_ok = 1
         else:
             os.makedirs(os.path.join(self.desktop, 'Απώλειες-Κλοπές'), exist_ok=True)
             shutil.move(self.doc_filename, os.path.join(self.desktop, os.path.join('Απώλειες-Κλοπές', self.doc_filename)))
             self.doc_destination = os.path.join(self.desktop, os.path.join('Απώλειες-Κλοπές', self.doc_filename))
             messagebox.showerror('Σφάλμα!', f'Το αρχείο με τίτλο {self.doc_filename} υπάρχει ήδη στον φάκελο {self.main.office_name}!\nΤο αρχείο μεταφέρθηκε στην επιφάνεια εργασίας προκειμένου να το μετακινήσετε χειροκίνητα!')
+
+
+    def move_pdf_file(self):
+        while True:
+            try:
+                os.rename(os.path.join(self.desktop, self.pdf_filename), os.path.join(self.office_folder, self.pdf_filename))
+                break
+            except PermissionError:
+                messagebox.showerror('Σφάλμα!', f'Παρακαλώ κλείστε το αρχείο {self.pdf_filename} προκειμένου ολοκληρωθεί η αρχειοθέτηση!')
+            except FileExistsError:
+                messagebox.showerror('Σφάλμα!', f'Το αρχείο με τίτλο {self.pdf_filename} υπάρχει ήδη στον φάκελο {self.main.office_name}!\nΠαρακαλώ μετακινήσετε το αρχείο χειροκίνητα!')
+                break
+            except FileNotFoundError:
+                messagebox.showerror('Σφάλμα!', f'Το αρχείο με τίτλο {self.pdf_filename} δεν υπάρχει στην επιφάνεια εργασίας!\nΠαρακαλώ μετακινήσετε το αρχείο χειροκίνητα!')
+                break
+            except OSError:
+                shutil.move(os.path.join(self.desktop, self.pdf_filename), os.path.join(self.office_folder, self.pdf_filename))
+                break
