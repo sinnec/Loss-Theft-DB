@@ -1,13 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import simpledialog
 from tkinter import messagebox
 from tkinter import filedialog
 import tkcalendar
 from datetime import datetime
 import shelve
 import os.path
-from helper_methods import latin_to_greek, datetime_formatter, greek_accent_remover, window_centre_position
+from helper_methods import latin_to_greek, datetime_formatter, greek_accent_remover, window_centre_position, final_s_checker
 from entry import Entry
 import database
 import word
@@ -156,13 +155,13 @@ class Main():
         self.f3 = tk.LabelFrame(self.search_tab, text="Ταξινόμηση Κατά", bg="lightyellow", padx=5, pady=5)
         self.f3.pack(expand=True, fill='both')
 
-        self.sort_by_variable = tk.StringVar(value='surname')
+        self.sort_by_variable = tk.StringVar(value='timestamp')
+        self.sort_by_creation_date = tk.Radiobutton(self.f3,text='Ημερομηνία Δημιουργίας', variable=self.sort_by_variable, value='timestamp', bg='lightyellow', activebackground='lightyellow')
+        self.sort_by_creation_date.pack(fill='both', expand=True, side='left')
         self.sort_by_name = tk.Radiobutton(self.f3,text='Επώνυμο', variable=self.sort_by_variable, value='surname, name', bg='lightyellow', activebackground='lightyellow')
         self.sort_by_name.pack(fill='both', expand=True, side='left')
         self.sort_by_prot_date = tk.Radiobutton(self.f3,text='Ημερομηνία Πρωτοκόλλου', variable=self.sort_by_variable, value='protocol_date', bg='lightyellow', activebackground='lightyellow')
         self.sort_by_prot_date.pack(fill='both', expand=True, side='left')
-        self.sort_by_creation_date = tk.Radiobutton(self.f3,text='Ημερομηνία Δημιουργίας', variable=self.sort_by_variable, value='timestamp', bg='lightyellow', activebackground='lightyellow')
-        self.sort_by_creation_date.pack(fill='both', expand=True, side='left')
 
         tk.Button(self.f3, text='Αναζήτηση', command=self.get_search_pars).pack(fill='both', expand=True, side='left')
 
@@ -277,16 +276,18 @@ class Main():
                 self.error = True
                 self.error_message += '\n- Διαλέξτε Προξενική/Λιμενική Αρχή!'
         try:
-            datetime.strptime(self.protocol_date, self.data_date_str)
+            self.protocol_date_object = datetime.strptime(self.protocol_date, self.data_date_str)
+            if self.protocol_date_object > datetime.today():
+                self.error = True
+                self.error_message += '\n- Η ημερομηνία πρωτοκόλλου δεν μπορεί να είναι μεταγενέστερη της σημερινής!'
         except:
             if not self.protocol_date == '':
                 self.error = True
-                self.error_message += '\n- Δώστε σωστή μορφή ημερομηνίας πρωτοκόλλου! π.χ. 01/01/2020'
-        self.error_message.strip('\n')
+                self.error_message += '\n- Δώστε σωστή μορφή ημερομηνίας πρωτοκόλλου! π.χ. 24/03/2020'
         if not self.error:
             self.id_number = latin_to_greek(self.id_number)
             self.surname = latin_to_greek(self.surname)
-            self.name = latin_to_greek(self.name)
+            self.name = final_s_checker(latin_to_greek(self.name))
             if check_reason == 'new':
                 self.office_name = latin_to_greek(self.office_name)
                 self.office_article = latin_to_greek(self.office_article)
@@ -497,6 +498,7 @@ class Main():
     def reset(self):
         if word.doc_move_ok == 1:
             word.move_pdf_file()
+        word.doc_move_ok == 0
         self.enable_widgets([self.f1_1, self.f1_2, self.f1_3_1, self.f1_3_2, self.f1_4, self.f1_4_1])
         to_delete = [self.id_number_entry, self.surname_entry, self.name_entry, self.protocol_num_entry, self.protocol_date_entry]
         for item in to_delete:
@@ -512,6 +514,7 @@ class Main():
         self.card_var.set(0)
 
     def exit(self):
+        print(word.doc_move_ok)
         if word.doc_move_ok == 1:
             word.move_pdf_file()
         root.destroy()
