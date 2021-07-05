@@ -36,7 +36,7 @@ class WordCreator():
 
     def create_text_variables(self):
         if self.main.reason == 'Απώλεια':
-            self.reason_text = 'απώλειάς'
+            self.reason_text = 'απωλείας'
         elif self.main.reason == 'Κλοπή':
             self.reason_text = 'κλοπής'
         else:
