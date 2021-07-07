@@ -21,7 +21,7 @@ class Main():
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Dev") #Released v1.4.1
+        self.root.title("Απώλειες/Κλοπές Δελτίων Αστυνομικής Ταυτότητας Dev") #Released v1.4.2
         
         #self.root.geometry('750x400')
         self.root.resizable(width='false', height='false')
@@ -498,7 +498,7 @@ class Main():
     def reset(self):
         if word.doc_move_ok == 1:
             word.move_pdf_file()
-        word.doc_move_ok == 0
+            word.doc_move_ok = 0
         self.enable_widgets([self.f1_1, self.f1_2, self.f1_3_1, self.f1_3_2, self.f1_4, self.f1_4_1])
         to_delete = [self.id_number_entry, self.surname_entry, self.name_entry, self.protocol_num_entry, self.protocol_date_entry]
         for item in to_delete:
@@ -514,7 +514,6 @@ class Main():
         self.card_var.set(0)
 
     def exit(self):
-        print(word.doc_move_ok)
         if word.doc_move_ok == 1:
             word.move_pdf_file()
         root.destroy()
